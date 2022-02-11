@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
+    request.session.set_test_cookie()
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by("-views")[:5]
 
@@ -35,6 +36,10 @@ def index(request):
     '''
 
 def about(request):
+    if request.session.test_cookie_worked():
+        print("TEST COOKIE WORKED!")
+        request.session.delete_test_cookie()
+
     context_dict = {
         'boldmessage': 'This tutorial has been put together by Alex'
         }
